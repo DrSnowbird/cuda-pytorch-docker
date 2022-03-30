@@ -5,11 +5,12 @@
 
 # Why (atop NVIDIA Container image):
 * A base Container with `no root access` (except using `sudo ...` and you can remove it using `sudo apt-get remove sudo` to protect your Container).
-* As most AI/ML/DL scientisits know that the first big hurdle of applying the technologies is to set up a `ML/DL Python environments (versions compatibles among all software libs (CUDA, PyTorch, H/W GPU Cards/versions etc.).
+* As most AI/ML/DL scientisits know that the first big hurdle of applying the technologies is to set up a `ML/DL Python environments (versions compatibles among all software libs, GPU support, CUDA, PyTorch, H/W GPU Cards/versions etc.).
 * The goal of this project (Deep Learning Container) is to provide `ready-to-use Docker Container` for your ML/DL Python experiments to save tons of your time and frustrations dealing with those `versions, comptabilities, GPU cards not supported, etc.`
 * And, the default Jupyter Notebooks app is automatically setup ready to use.
     ```
-    If [ you are looking for such common requirements in AI/ML/DL CUDA (latest) + PyTorch (latest) base Container ]:
+    If [ you are looking for such common requirements in 
+        AI/ML/DL CUDA (latest) + PyTorch (latest) base Container ]:
        Then [ this one may be for you ]
     ```
 
@@ -87,8 +88,7 @@
     Jupyter-TensorBoard
     ```
 
-# Known Issues
-Known Issues
+# Known Issues (from NVIDIA web site)
 The version of OpenUCX included with PyTorch container image version 21.11 has known issues with RAPIDS UCX-Py. When using Dask with this container version, pass protocol="tcp" to LocalCUDACluster(), not protocol="ucx", to work around these issues. Additionally, LocalCUDACluster UCX-specific configurations must remain unspecified; they are: enable_tcp_over_ucx, enable_nvlink, enable_infiniband, enable_rdmacm and ucx_net_devices.
 ARM
 Passing external CUDA Streams to PyTorch via `torch.cuda.streams.ExternalStream(stream_v)` might fail and is being debugged.
