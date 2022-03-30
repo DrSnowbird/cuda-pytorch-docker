@@ -1,0 +1,65 @@
+developer@192:~/workspace$ wget https://raw.githubusercontent.com/pytorch/pytorch/master/torch/utils/collect_env.py
+--2022-01-13 15:47:03--  https://raw.githubusercontent.com/pytorch/pytorch/master/torch/utils/collect_env.py
+Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 185.199.108.133, 185.199.111.133, 185.199.109.133, ...
+Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|185.199.108.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 16723 (16K) [text/plain]
+Saving to: ‘collect_env.py’
+
+collect_env.py      100%[===================>]  16.33K  --.-KB/s    in 0.003s  
+
+2022-01-13 15:47:03 (5.63 MB/s) - ‘collect_env.py’ saved [16723/16723]
+
+developer@192:~/workspace$ # For security purposes, please check the contents of collect_env.py before running it.
+developer@192:~/workspace/aitextgen-try$ python collect_env.py
+Collecting environment information...
+PyTorch version: 1.11.0a0+b6df043
+Is debug build: False
+CUDA used to build PyTorch: 11.5
+ROCM used to build PyTorch: N/A
+
+OS: Ubuntu 20.04.3 LTS (x86_64)
+GCC version: (Ubuntu 9.3.0-17ubuntu1~20.04) 9.3.0
+Clang version: Could not collect
+CMake version: version 3.21.3
+Libc version: glibc-2.31
+
+Python version: 3.8.12 | packaged by conda-forge | (default, Oct 12 2021, 21:59:51)  [GCC 9.4.0] (64-bit runtime)
+Python platform: Linux-5.11.0-34-generic-x86_64-with-glibc2.10
+Is CUDA available: True
+CUDA runtime version: 11.5.50
+GPU models and configuration: GPU 0: NVIDIA GeForce RTX 3090
+Nvidia driver version: 470.86
+cuDNN version: Probably one of the following:
+/usr/lib/x86_64-linux-gnu/libcudnn.so.8.3.1
+/usr/lib/x86_64-linux-gnu/libcudnn_adv_infer.so.8.3.1
+/usr/lib/x86_64-linux-gnu/libcudnn_adv_train.so.8.3.1
+/usr/lib/x86_64-linux-gnu/libcudnn_cnn_infer.so.8.3.1
+/usr/lib/x86_64-linux-gnu/libcudnn_cnn_train.so.8.3.1
+/usr/lib/x86_64-linux-gnu/libcudnn_ops_infer.so.8.3.1
+/usr/lib/x86_64-linux-gnu/libcudnn_ops_train.so.8.3.1
+HIP runtime version: N/A
+MIOpen runtime version: N/A
+
+Versions of relevant libraries:
+[pip3] numpy==1.21.4
+[pip3] nvidia-dlprof-pytorch-nvtx==1.8.0
+[pip3] pytorch-lightning==1.5.7
+[pip3] pytorch-pretrained-bert==0.6.2
+[pip3] pytorch-quantization==2.1.2
+[pip3] torch==1.11.0a0+b6df043
+[pip3] torch-tensorrt==1.1.0a0
+[pip3] torchmetrics==0.6.2
+[pip3] torchtext==0.12.0a0
+[pip3] torchvision==0.11.0a0
+[conda] magma-cuda110             2.5.2                         5    local
+[conda] mkl                       2019.5                      281    conda-forge
+[conda] mkl-include               2019.5                      281    conda-forge
+[conda] numpy                     1.21.4           py38he2449b9_0    conda-forge
+[conda] nvidia-dlprof-pytorch-nvtx 1.8.0                    pypi_0    pypi
+[conda] pytorch-quantization      2.1.2                    pypi_0    pypi
+[conda] torch                     1.11.0a0+b6df043          pypi_0    pypi
+[conda] torch-tensorrt            1.1.0a0                  pypi_0    pypi
+[conda] torchtext                 0.12.0a0                 pypi_0    pypi
+[conda] torchvision               0.11.0a0                 pypi_0    pypi
+

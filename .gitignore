@@ -127,3 +127,15 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# -- temp files --
+**SAVE/
+*.tmp
+*.swp
+**/*BACKUP/
+app/lib/
+app/samples_demo/
+**/workspace/
+**/data/
+**/notebooks/
+

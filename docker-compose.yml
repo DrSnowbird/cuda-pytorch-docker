@@ -1,0 +1,47 @@
+version: '3' 
+services:
+  cuda-pytorch-docker:
+    container_name: cuda-pytorch-docker
+    image: openkbs/cuda-pytorch-docker
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      ## ==== Jupyter Notebook Specifics: ====
+      #- PASSWORD=${PASSWORD:-ChangeMe!}
+      #- ENABLE_HTTPS=${ENABLE_HTTPS:-false}
+      ## ==== Common Container Setup: ====
+      - USER_ID=${USER_ID:-1000}
+      - GROUP_ID=${GROUP_ID:-1000}
+      # - APP_HOME=${APP_HOME:-/home/developer/app}
+      # - APP_MAIN=${APP_MAIN:-setup.sh}
+      #- DOCKER_HOST_IP=${DOCKER_HOST_IP:-127.0.0.1}
+      #- DOCKER_HOST_NAME=${DOCKER_HOST_NAME:-localhost}
+    restart: always
+    gpus: all
+    ports:
+      - 6006:6006
+      - 8888:8888
+    env_file:
+      - ./.env
+    volumes:
+      ## ==== Common Container mapping: ====
+      # - /etc/hosts:/etc/hosts
+      # - /dev/shm:/dev/shm
+      # - /var/run/docker.sock:/var/run/docker.sock
+      # - /tmp/.X11-unix:/tmp/.X11-unix
+      ## ==== Corporate Proxies Gateway Relay: ====
+      #- ./certificates:/home/developer/certificates
+      ## ==== Use $HOME/data-docker as User's base directory: ====
+      #- $HOME/data-docker/cuda-pytorch-docker/data:/home/developer/data
+      #- $HOME/data-docker/cuda-pytorch-docker/workspace:/home/developer/workspace
+      ## ==== Use current directory as User's base directory: ====
+      - ~/data-docker/cuda-pytorch-docker/notebooks:/home/developer/notebooks
+      - ~/data-docker/cuda-pytorch-docker/data:/home/developer/data
+      - ~/data-docker/cuda-pytorch-docker/logs:/home/developer/logs
+      - ~/data-docker/cuda-pytorch-docker/workspace:/home/developer/workspace
+      #- ./notebooks:/home/developer/notebooks
+      #- ./data:/home/developer/data
+      #- ./logs:/home/developer/logs
+      #- ./workspace:/home/developer/workspace
+
