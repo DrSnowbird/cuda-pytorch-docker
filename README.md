@@ -1,6 +1,6 @@
 # NVIDIA CUDA + PyTorch Monthly build + Jupyter Notebooks in `Non-Root` Docker Container
 * All the information below is mainly from nvidia.com except the wrapper shell scripts (and related documentation) that I created.
-* The latest RTX 3090 GPU or higher is supported (tested to work too) in this Docker Container.
+* The latest RTX 3090 GPU or higher is supported (RTX 3090 tested to work too) in this Docker Container.
 * Warning: the Container image is relatively huge! `Make sure you have large memory, CPU, and GPU to run`. Also, this Container is not for low-end GPU and CPU to use to run Deep Learning models.
 
 # Why (atop NVIDIA Container image):
