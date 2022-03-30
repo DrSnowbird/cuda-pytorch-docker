@@ -13,6 +13,13 @@
        Then [ this one may be for you ]
     ```
 
+# Libs (based upon NVIDIA Web page)
+* Ubuntu 20.04 including Python 3.8 environment
+* NVIDIA CUDA 11.6.0
+* cuBLAS 11.8.1.74
+* NVIDIA cuDNN 8.3.2.44
+* NVIDIA NCCL 2.11.4 (optimized for NVLink™)
+
 # Build
 * Simply,
     ```
@@ -42,7 +49,7 @@
 
 # Releases
 * [PyTorch NVIDIA Release 22.01](https://docs.nvidia.com/deeplearning/frameworks/pytorch-release-notes/rel_22-01.html#rel_21-01)
-* Note: the latest NVIDIA v 22-03 is having some issues, hence the 'v 22-01' is the recommended stable release currrently. The following is a partial contents from the above NVIDIA link.
+* Note: the latest NVIDIA v 22-03 is having some issues when running my Pytorch/Lightening Transformer NLP experiments, hence the 'v 22-01' is the recommended stable release currrently. The following is a partial contents from the above NVIDIA link.
     ```
     PyTorch Release 22.01
     The NVIDIA container image for PyTorch, release 22.01, is available on NGC.
