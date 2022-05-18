@@ -68,9 +68,13 @@ jupyter nbextension enable --py --user widgetsnbextension
 
 #### ---- Auto completion ----
 #jupyter nbextension install --py jupyter_tabnine --system
+
 #### ---- enable notebook extension and server extension
 #jupyter nbextension enable --py --user jupyter_tabnine 
 #jupyter serverextension enable --py --user jupyter_tabnine
+
+# ref: https://stackoverflow.com/questions/41743837/no-such-comm-target-registered-error-in-ipython
+jupyter nbextension enable --py widgetsnbextension
 
 DATA_RATE_LIMIT=1.0e10
 DATA_RATE_ARGS="--NotebookApp.iopub_data_rate_limit=${DATA_RATE_LIMIT}"

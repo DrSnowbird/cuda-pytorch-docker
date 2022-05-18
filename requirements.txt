@@ -31,6 +31,10 @@ seaborn
 pyLDAvis
 networkx
 
+# ipython
+ipywidgets
+widgetsnbextension
+
 # Graphviz, Network Node-Edge
 pydot
 networkx
