@@ -73,7 +73,7 @@ RUN sudo apt-get update -y  && \
 ENV JUPYTER_CONF_DIR=$HOME/.jupyter
 
 COPY --chown=${USER}:${USER} ./scripts/jupyter_notebook_config.py ${JUPYTER_CONF_DIR}/
-COPY --chown=${USER}:${USER} ./notebooks $HOME/sample-notebooks
+COPY --chown=${USER}:${USER} ./sample-notebooks $HOME/sample-notebooks
 
 # Jupyter has issues with being run directly:
 #   https://github.com/ipython/ipython/issues/7062
