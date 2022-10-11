@@ -14,6 +14,16 @@ if [ $# -lt 1 ]; then
     echo "--------------------------------------------------------"
 fi
 
+#######################################################
+#### ---- Detect: .env file existing or not! ---- #####
+#######################################################
+if [ ! -s .env ]; then
+    echo -e ">>> Detect:File: .env: -> Not found! Need to generate!"
+    bin/auto-config-all.sh
+    ls -al .env
+    echo -e "..."
+fi
+
 ###########################################################################
 #### ---- RUN Configuration (CHANGE THESE if needed!!!!)           --- ####
 ###########################################################################
@@ -446,7 +456,7 @@ function checkHostVolumePath() {
     _SYS_PATHS="/dev /var /etc"
     if [[ $_SYS_PATHS != *"${_left}"* ]]; then
         sudo chown -R ${USER_ID}:${USER_ID} ${_left}
-        ls -al ${_left}
+        #ls -al ${_left}
     fi
 }
 

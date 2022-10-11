@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/bash
 
 ################################ Usage #######################################
 
@@ -99,6 +99,32 @@ function generatePortMapping_dockercompose() {
 generatePortMapping_dockercompose
 echo -e "PORT_MAP=\n${PORTS_MAPPING}"
 sed -i ${SED_MAC_FIX} "s%^.*\#{{PORTS_MAPPING}}%$PORTS_MAPPING%g" ${DOCKER_COMPOSE_FILE}
+
+
+################################################
+#### ---- USER_OPTIONS: Optional setup:---- ####
+################################################
+USER_OPTION=
+USER_ID=`cat ${DOCKER_ENV_FILE} | grep  "^USER_ID=" | cut -d'=' -f2 | sed 's/ *$//g'`
+GROUP_ID=`cat ${DOCKER_ENV_FILE} | grep  "^GROUP_ID=" | cut -d'=' -f2 | sed 's/ *$//g'`
+function generate_user_ids_options() {
+    #USER_OPTIONS="--user $(id -g):$(id -u)"
+    if [ "${USER_ID}" != "" ] && [ "${USER_ID}" != "" ]; then
+        USER_DOCKER_RUN_OPTIONS="--user ${USER_ID:-$(id -g)}:${GROUP_ID:-$(id -u)}"
+        USER_DOCKER_COMPOSE_ATTRIBUTE="${USER_ID}:${GROUP_ID}"
+        echo -e "================> docker-compose user attribute: ${USER_DOCKER_COMPOSE_ATTRIBUTE}"
+        find_user_option_in_template=`cat ${DOCKER_COMPOSE_FILE} | grep "#.*{{USER_OPTION}}" `
+        if [ "${find_user_option_in_template}" != "" ]; then
+            sed -i ${SED_MAC_FIX} "s%^\(\s*\)\#{{USER_OPTION}}%\1user: $USER_DOCKER_COMPOSE_ATTRIBUTE%g" ${DOCKER_COMPOSE_FILE}
+        else
+            sed -i 's/^\(\s*\)\(environment:.*\)$/\1user: "1000:1000"\n\1\2/g' ${DOCKER_COMPOSE_FILE}
+        fi
+    else
+        echo -e "................. skip: docker-compose user attribute: ${USER_DOCKER_COMPOSE_ATTRIBUTE}"
+        sed -i ${SED_MAC_FIX} "s%^.*\#\s*{{USER_OPTION}}.*% %g" ${DOCKER_COMPOSE_FILE}
+    fi
+}
+generate_user_ids_options
 
 
 ###########################################################
@@ -257,12 +283,24 @@ function generateVolumeMapping_dockercompose() {
                 fi
             fi
         else
-            ## -- pattern like: "data"
-            debug "-- default sub-directory (without prefix absolute path) --"
-            VOLUMES_MAPPING="${VOLUMES_MAPPING}${prefix_yaml}${LOCAL_VOLUME_DIR}/$vol:${DOCKER_VOLUME_DIR}/$vol"
-            VOLUMES_MAPPING_LIST="${VOLUMES_MAPPING_LIST} ${LOCAL_VOLUME_DIR}/$vol:${DOCKER_VOLUME_DIR}/$vol"
-            if [ ! -s ${LOCAL_VOLUME_DIR}/$vol ]; then
-                mkdir -p ${LOCAL_VOLUME_DIR}/$vol
+            ## -- pattern like: "data" or "./data"
+            hasDot=`echo $left|grep "^\./"`
+            if [ "$hasDot" != "" ]; then
+                ## pattern: "./data"
+                debug "-- pattern: ./data --"
+                VOLUMES_MAPPING="${VOLUMES_MAPPING}${prefix_yaml}`pwd`/${vol#./}:${DOCKER_VOLUME_DIR}/${vol#./}"
+                VOLUMES_MAPPING_LIST="${VOLUMES_MAPPING_LIST} `pwd`/${vol#./}:${DOCKER_VOLUME_DIR}/${vol#./}"
+                if [ ! -s `pwd`/${vol#./} ]; then
+                    mkdir -p `pwd`/${vol#./}
+                fi
+            else
+                ## pattern: "data"
+                debug "-- default sub-directory (without prefix absolute path) --"
+                VOLUMES_MAPPING="${VOLUMES_MAPPING}${prefix_yaml}${LOCAL_VOLUME_DIR}/$vol:${DOCKER_VOLUME_DIR}/$vol"
+                VOLUMES_MAPPING_LIST="${VOLUMES_MAPPING_LIST} ${LOCAL_VOLUME_DIR}/$vol:${DOCKER_VOLUME_DIR}/$vol"
+                if [ ! -s ${LOCAL_VOLUME_DIR}/$vol ]; then
+                    mkdir -p ${LOCAL_VOLUME_DIR}/$vol
+                fi
             fi
             if [ $DEBUG -gt 0 ]; then ls -al ${LOCAL_VOLUME_DIR}/$vol; fi
         fi       
@@ -277,13 +315,25 @@ volumes_map_exists_in_dockercompose="`cat ${DOCKER_COMPOSE_FILE} |grep -E '^( |\
 echo -e "====>volumes_map_exists_in_dockercompose = ${volumes_map_exists_in_dockercompose}"
 echo -e "====> VOLUMES_MAPPING_LIST:\n${VOLUMES_MAPPING_LIST}"
 MORE_VOLUMES_MAPPING=""
+
 function find_volumes_in_dockercompose() {
     _volmap_exists_with_expanded_home_dir="`eval echo ${volumes_map_exists_in_dockercompose}`"
     echo -e "---->_volmap_exists_with_expanded_home_dir:\n ${_volmap_exists_with_expanded_home_dir} "
     for volmap in $VOLUMES_MAPPING_LIST; do
-        #echo -e "----> checking volmap existing in docker-compose.yml or not: $volmap"
+        echo -e ">>>>>>>----> checking volmap existing in docker-compose.yml or not: $volmap"
         if [[ ! "${_volmap_exists_with_expanded_home_dir}" =~ .*${volmap}.* ]]; then
             MORE_VOLUMES_MAPPING="${MORE_VOLUMES_MAPPING}${prefix_yaml}${volmap}\n"
+            # -- 1. Create host directory with proper USER:GROUP: -- ##
+            _host_dir=`echo ${volmap} | cut -d ":" -f 1 `  
+            echo -e ">>> >>> HOST's local dir (to create with proper USER_ID and GROUP_ID): "
+            echo -e ">>> >>> volmap=${volmap}"
+            echo -e ">>> >>> _host_dir=${_host_dir}"
+            if [ ! -s ${_host_dir} ]; then
+                checkHostVolumePath "${_host_dir}"
+            fi
+            if [ "$USER_ID" != "" ] && [ "$GROUP_ID" != "" ]; then
+                sudo chown -R $USER_ID:$GROUP_ID ${_host_dir}
+            fi
         fi
     done
 }
@@ -306,7 +356,8 @@ function auto_mkdir_for_dockercompose() {
         for v in $volumes_current_dir; do
             if [ ! -s $v ]; then
                 checkHostVolumePath "${PROJ_DIR}/$v"
-                #mkdir -p ${PROJ_DIR}/$v
+                mkdir -p ${PROJ_DIR}/$v
+                chown -R $USER_ID:$GROUP_ID ${PROJ_DIR}/$v
             fi
         done
     fi
