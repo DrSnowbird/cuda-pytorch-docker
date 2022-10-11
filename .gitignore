@@ -139,3 +139,6 @@ app/samples_demo/
 **/data/
 **/notebooks/
 
+# -- ignore generated files --
+.env
+docker-compose.yml
