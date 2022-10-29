@@ -37,12 +37,12 @@
     ./run.sh -d -r always (daemon + always-up)
     ```
 
-## Jupyter Notebooks (Default App)
+## `(new!)` Jupyter Notebooks Server (Default App)
 * Then, go to your Web Browser to access Jupyter Notebook with "ChangeMe!" as default password.
     ```
-    http://<Host-IP>:8888/
+    http://<Host-IP>:8888/tree
     or
-    http://localhost:8888/
+    http://localhost:8888/tree
     ```
 
 # References

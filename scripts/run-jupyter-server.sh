@@ -64,7 +64,7 @@ tensorboard --logdir $HOME/logs &
 
 #jupyter notebook "$@"
 
-# jupyter notebook --NotebookApp.iopub_data_rate_limit=1.0e10
+# jupyter notebook --ServerApp.iopub_data_rate_limit=1.0e10
 
 #### ---- Auto completion ----
 #jupyter nbextension install --py jupyter_tabnine --system
@@ -77,11 +77,11 @@ tensorboard --logdir $HOME/logs &
 jupyter nbextension enable --py widgetsnbextension
 
 DATA_RATE_LIMIT=1.0e10
-DATA_RATE_ARGS="--NotebookApp.iopub_data_rate_limit=${DATA_RATE_LIMIT}"
+DATA_RATE_ARGS="--ServerApp.iopub_data_rate_limit=${DATA_RATE_LIMIT}"
 
 ENABLE_HTTPS=`echo $ENABLE_HTTPS |tr '[:upper:]' '[:lower:]'`
 if [ "$ENABLE_HTTPS" = "true" ]; then
-    jupyter notebook --ip="0.0.0.0" "$@" --certfile=${SSL_CERT} --keyfile=${SSL_KEY} ${DATA_RATE_ARGS}
+    jupyter server --ip="0.0.0.0" "$@" --certfile=${SSL_CERT} --keyfile=${SSL_KEY} ${DATA_RATE_ARGS}
 else
-    jupyter notebook --ip="0.0.0.0" "$@" ${DATA_RATE_ARGS}
+    jupyter server --ip="0.0.0.0" "$@" ${DATA_RATE_ARGS}
 fi

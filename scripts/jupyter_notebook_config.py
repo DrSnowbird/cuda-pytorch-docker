@@ -11,23 +11,23 @@ from notebook.auth import passwd
 #  token login mechanism.
 #
 #  This can be set to false to prevent changing password from the UI/API.
-c.NotebookApp.allow_password_change = True
+c.ServerApp.allow_password_change = True
 
 # Set options for certfile, ip, password, and toggle off
 # browser auto-opening
-#c.NotebookApp.certfile = u'/absolute/path/to/your/certificate/mycert.pem'
-#c.NotebookApp.keyfile = u'/absolute/path/to/your/certificate/mykey.key'
+#c.ServerApp.certfile = u'/absolute/path/to/your/certificate/mycert.pem'
+#c.ServerApp.keyfile = u'/absolute/path/to/your/certificate/mykey.key'
 # Set ip to '*' to bind on all interfaces (ips) for the public server
 
-c.NotebookApp.ip = '*'
-#c.NotebookApp.ip = '0.0.0.0'
-c.NotebookApp.port = int(os.getenv('PORT', 8888))
-c.NotebookApp.open_browser = True
+c.ServerApp.ip = '*'
+#c.ServerApp.ip = '0.0.0.0'
+c.ServerApp.port = int(os.getenv('PORT', 8888))
+c.ServerApp.open_browser = True
 c.MultiKernelManager.default_kernel_name = 'python3'
 
 # sets a password if PASSWORD is set in the environment
 #if 'PASSWORD' in os.environ:
-#  c.NotebookApp.password = passwd(os.environ['PASSWORD'])
+#  c.ServerApp.password = passwd(os.environ['PASSWORD'])
 #  del os.environ['PASSWORD']
 
 # sets a password if PASSWORD is set in the environment
@@ -36,7 +36,7 @@ if not 'PASSWORD' in os.environ or os.environ['PASSWORD'] is None:
     
 if 'PASSWORD' in os.environ:
     print("===>> Passowrd=" + os.environ['PASSWORD'])
-    c.NotebookApp.password = passwd(os.environ['PASSWORD'])
+    c.ServerApp.password = passwd(os.environ['PASSWORD'])
     print("Password file at " + os.environ['JUPYTER_CONF_DIR'] + "/jupyter_password.txt")
     fp = open(os.environ['JUPYTER_CONF_DIR']+"/jupyter_password.txt", "w")
     fp.write(os.environ['PASSWORD'])

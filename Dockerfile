@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/pytorch:22.09-py3
+FROM nvcr.io/nvidia/pytorch:22.10-py3
 
 MAINTAINER OpenKBS <DrSnowbird@openkbs.org>
 
@@ -73,6 +73,7 @@ RUN sudo apt-get update -y  && \
 ENV JUPYTER_CONF_DIR=$HOME/.jupyter
 
 COPY --chown=${USER}:${USER} ./scripts/jupyter_notebook_config.py ${JUPYTER_CONF_DIR}/
+COPY --chown=${USER}:${USER} ./scripts/jupyter_server_config.py ${JUPYTER_CONF_DIR}/
 COPY --chown=${USER}:${USER} ./sample-notebooks $HOME/sample-notebooks
 
 # Jupyter has issues with being run directly:
@@ -80,8 +81,9 @@ COPY --chown=${USER}:${USER} ./sample-notebooks $HOME/sample-notebooks
 # We just add a little wrapper script.
 ADD --chown=${USER}:${USER} ./scripts $HOME/scripts
 COPY --chown=${USER}:${USER} ./scripts/run-jupyter.sh /run-jupyter.sh
+COPY --chown=${USER}:${USER} ./scripts/run-jupyter-server.sh /run-jupyter-server.sh
 
-RUN sudo chmod +x $HOME/scripts/*.sh /run-jupyter.sh
+RUN sudo chmod +x $HOME/scripts/*.sh /run-jupyter*.sh
 
 # Expose Ports for TensorBoard (6006), Ipython (8888)
 EXPOSE 6006
@@ -104,5 +106,6 @@ USER ${USER}
 WORKDIR "$HOME"
 
 #CMD ["/run-jupyter.sh", "notebooks", "--allow-root", "--port=8888", "--ip=0.0.0.0", "--no-browser"]
-CMD ["/run-jupyter.sh", "--allow-root"]
+#CMD ["/run-jupyter.sh", "--allow-root"]
+CMD ["/run-jupyter-server.sh", "--allow-root"]
 
