@@ -169,25 +169,21 @@ function check_NVIDIA() {
     NVIDIA_PCI=`lspci | grep VGA | grep -i NVIDIA`
     if [ "$NVIDIA_PCI" == "" ]; then
         echo "---- No Nvidia PCI found! No Nvidia/GPU physical card(s) available! Use CPU only!"
+    fi
+    which nvidia-smi
+    if [ $? -ne 0 ]; then
+        echo "---- No nvidia-smi command! No Nvidia/GPU driver setup! Use CPU only!"
         GPU_OPTION=
     else
-        which nvidia-smi
-        if [ $? -ne 0 ]; then
-            echo "---- No nvidia-smi command! No Nvidia/GPU driver setup! Use CPU only!"
+        nvidia-smi
+        NVIDIA_SMI=`nvidia-smi | grep -i NVIDIA | grep -i CUDA`
+        if [ "$NVIDIA_SMI" == "" ]; then
+            echo "---- No nvidia-smi command not function correctly. Use CPU only!"
             GPU_OPTION=
         else
-            NVIDIA_SMI=`nvidia-smi | grep -i NVIDIA | grep -i CUDA`
-            if [ "$NVIDIA_SMI" == "" ]; then
-                echo "---- No nvidia-smi command not function correctly. Use CPU only!"
-                GPU_OPTION=
-            else
-                echo ">>>> Found Nvidia GPU: Use all GPU(s)!"
-                echo "${NVIDIA_SMI}"
-                GPU_OPTION=" --gpus all "
-            fi
-            if [ ${IS_TO_RUN_CPU} -gt 0 ]; then
-                GPU_OPTION=
-            fi
+            echo ">>>> Found Nvidia GPU: Use all GPU(s)!"
+            echo "${NVIDIA_SMI}"
+            GPU_OPTION=" --gpus all "
         fi
     fi
 }
@@ -199,7 +195,7 @@ if [ ${IS_TO_RUN_GPU} -gt 0 ]; then
     #   docker run --gpus all --ipc=host --ulimit memlock=-1 --ulimit stack=67108864 ...
     # -ipc=host --ulimit memlock=-1 --ulimit stack=67108864
     GPU_OPTION="${GPU_OPTION} --ulimit memlock=-1 --ulimit stack=67108864 "
-    echo "GPU_OPTION= ${GPU_OPTION}"
+    echo ">>>> GPU_OPTION= ${GPU_OPTION}"
 fi
 echo "$@"
 
