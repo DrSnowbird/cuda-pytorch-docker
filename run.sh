@@ -166,7 +166,7 @@ MORE_OPTIONS=
 
 NVIDIA_DOCKER_AVAILABLE=0
 function check_NVIDIA() {
-    NVIDIA_PCI=`lspci | grep VGA | grep -i NVIDIA`
+    NVIDIA_PCI=`lspci | grep -i NVIDIA`
     if [ "$NVIDIA_PCI" == "" ]; then
         echo "---- No Nvidia PCI found! No Nvidia/GPU physical card(s) available! Use CPU only!"
     fi
