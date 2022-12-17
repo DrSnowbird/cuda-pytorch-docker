@@ -26,7 +26,17 @@
     ```
     make build
     ```
-
+# Test
+To test whether the GPU function can properly run inside the Container and make sure the Host's Nvidia driver being properly.
+1. In the host computer, run command:
+```
+nvidia-smi
+```
+2. Run the container with the above command to make sure the Container also have the access to GPU functions:
+```
+./run.sh nvidia-smi
+```
+ 
 # Run
 * Default run is to auto-detect Host's NVIDIA GPU, e.g., RTX 3090 or any and use all the CUDA units available.
     ```
