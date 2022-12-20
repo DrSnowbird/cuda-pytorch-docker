@@ -22,6 +22,13 @@ if [ ! -s .env ]; then
     bin/auto-config-all.sh
     ls -al .env
     echo -e "..."
+else
+    echo -e "=================================================================================="
+    echo -e ">>>> Existing .env found! If you want to overwrite it with new from .env.template:"
+    echo -e ".... Run the command below to auto-generate .env and docker-compose.yml:"
+    echo -e " "
+    echo -e ">>>> ./bin/auto-config-all.sh"
+    echo -e "=================================================================================="
 fi
 
 ###########################################################################

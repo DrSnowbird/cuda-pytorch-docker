@@ -99,6 +99,11 @@ ENV TOKENIZERS_PARALLELISM=false
 ENV NVIDIA_VISIBLE_DEVICES=all
 ENV NVIDIA_DRIVER_CAPABILITIES=compute,video,utility
 
+############################################
+#### ---- CA-Certifcates variable: ---- ####
+############################################
+ENV REQUESTS_CA_BUNDLE=${REQUESTS_CA_BUNDLE:-/etc/ssl/certs/ca-certificates.crt}
+
 ##################################
 #### ---- start user env ---- ####
 ##################################
