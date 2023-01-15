@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/pytorch:22.10-py3
+FROM nvcr.io/nvidia/pytorch:22.12-py3
 
 MAINTAINER OpenKBS <DrSnowbird@openkbs.org>
 
