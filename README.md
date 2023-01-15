@@ -26,6 +26,7 @@
     ```
     make build
     ```
+* If your docker host is behind your corporate SSL proxy, then you might want to use 'Dockerfile-proxy-SSL' instead of the default 'Dockerfile'. And, you want to also get your corporate's proxy SSL crt files to put in the ./certificates folder. That's all you need to do to make the build of Docker image working behind your corporate SSL proxy.
 # Test
 To test whether the GPU function can properly run inside the Container and make sure the Host's Nvidia driver being properly.
 1. In the host computer, run command:
