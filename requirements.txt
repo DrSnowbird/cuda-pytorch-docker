@@ -35,6 +35,7 @@ pyLDAvis
 networkx
 
 # ipython
+notebook
 ipywidgets
 widgetsnbextension
 

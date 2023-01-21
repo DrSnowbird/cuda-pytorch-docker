@@ -53,7 +53,6 @@ COPY --chown=${USER}:${USER} requirements.txt ./
 ENV PATH="$HOME/.local/bin:$PATH"
 RUN python3 -m pip --no-cache-dir install --upgrade pip && \
     python3 -m pip --no-cache-dir install --upgrade setuptools tensorflow && \
-    python3 -m pip --no-cache-dir install notebook && \
     python3 -m pip --no-cache-dir install -r requirements.txt
 
 ##################################

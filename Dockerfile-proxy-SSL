@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/pytorch:22.10-py3
+FROM nvcr.io/nvidia/pytorch:22.12-py3
 
 MAINTAINER OpenKBS <DrSnowbird@openkbs.org>
 
@@ -136,6 +136,6 @@ USER ${USER}
 WORKDIR "$HOME"
 
 #CMD ["/run-jupyter.sh", "notebooks", "--allow-root", "--port=8888", "--ip=0.0.0.0", "--no-browser"]
-#CMD ["/run-jupyter.sh", "--allow-root"]
-CMD ["/run-jupyter-server.sh", "--allow-root"]
+CMD ["/run-jupyter.sh", "--allow-root"]
+#CMD ["/run-jupyter-server.sh", "--allow-root"]
 
