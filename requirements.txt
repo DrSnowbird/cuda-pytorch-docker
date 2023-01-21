@@ -26,6 +26,9 @@ Pillow
 scikit_learn
 scipy
 
+# Web UI
+gradio
+
 # Plots
 seaborn
 pyLDAvis

@@ -49,7 +49,14 @@ nvidia-smi
     ```
 
 ## `(new!)` Jupyter Notebooks Server (Default App)
-* Then, go to your Web Browser to access Jupyter Notebook with "ChangeMe!" as default password.
+* You need access token from the log file depending up you use './run.sh' or 'make up'.
+  * If you use './run.sh' to start, then the console screen will have a line containing 'token'. You just need to copy-and-paste to use it to login.
+  * If you use 'make up' to start, then use the command below to see the 'token':
+```
+./log.sh
+```
+
+* Then, go to your Web Browser to access Jupyter Notebook:
     ```
     http://<Host-IP>:8888/tree
     or

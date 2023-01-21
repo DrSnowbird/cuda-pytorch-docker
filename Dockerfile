@@ -111,6 +111,6 @@ USER ${USER}
 WORKDIR "$HOME"
 
 #CMD ["/run-jupyter.sh", "notebooks", "--allow-root", "--port=8888", "--ip=0.0.0.0", "--no-browser"]
-#CMD ["/run-jupyter.sh", "--allow-root"]
-CMD ["/run-jupyter-server.sh", "--allow-root"]
+CMD ["/run-jupyter.sh", "--allow-root"]
+#CMD ["/run-jupyter-server.sh", "--allow-root"]
 
