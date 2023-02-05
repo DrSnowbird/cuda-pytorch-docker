@@ -226,9 +226,6 @@ elif [ $OS_TYPE -eq 3 ]; then
     #CERT_COMMAND=/usr/sbin/update-ca-certificates
     CMD_OPT=
     CERTITICATES_INSTALL_DIR=${CERTITICATES_INSTALL_DIR:-/usr/local/share/ca-certificates/}
-    #CERTIFICATES_FILE=${CERTIFICATES_FILE:-mitre-chain.txt}
-    # wget -O mitre-chain.crt --no-check-certificate https://gitlab.mitre.org/mitre-scripts/mitre-pki/raw/master/normalized/mitre-chain.txt
-    #wget -O ${CERTIFICATES_FILE} --no-check-certificate https://gitlab.mitre.org/mitre-scripts/mitre-pki/raw/master/normalized/${CERTIFICATES_FILE}
     apk update && apk add ca-certificates && rm -rf /var/cache/apk/* 
     #cp ${CERTIFICATES_FILE} /usr/local/share/ca-certificates/
     #update-ca-certificates
