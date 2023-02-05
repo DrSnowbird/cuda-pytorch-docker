@@ -1,4 +1,5 @@
 FROM nvcr.io/nvidia/pytorch:22.12-py3
+#FROM pytorch/pytorch:1.13.1-cuda11.6-cudnn8-runtime
 
 MAINTAINER OpenKBS <DrSnowbird@openkbs.org>
 
@@ -62,8 +63,15 @@ RUN python3 -m pip --no-cache-dir install --upgrade pip && \
 
 #RUN sudo apt install -y dirmngr gnupg apt-transport-https ca-certificates software-properties-common && \
 #RUN sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/'  && \
-RUN sudo apt-get update -y  && \
-    sudo apt-get install -y python3-ipykernel
+# ----------------------------------------------------------------------------
+# Timezone: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+# ref: https://dev.to/grigorkh/fix-tzdata-hangs-during-docker-image-build-4o9m
+# ----------------------------------------------------------------------------
+ENV TZ=${TZ:-Etc/UTC}
+#ENV TZ=Etc/UTC
+RUN sudo apt update && \
+    sudo ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ | sudo tee -a /etc/timezone && \
+    sudo apt install -y --no-install-recommends python3-ipykernel
 
 ##################################
 #### ---- Set up Jupyter ---- ####
