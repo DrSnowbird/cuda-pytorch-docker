@@ -43,8 +43,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       #- ./certificates:/home/developer/certificates
       ## ==== Use $HOME/data-docker as base directory: ====
-      - $HOME/data-docker/{{CONTAINER_NAME}}/data:/home/developer/data
-      - $HOME/data-docker/{{CONTAINER_NAME}}/workspace:/home/developer/workspace
+      #- $HOME/data-docker/{{CONTAINER_NAME}}/data:/home/developer/data
+      #- $HOME/data-docker/{{CONTAINER_NAME}}/workspace:/home/developer/workspace
       ## ==== Use current directory as root for mapping Volumes: ====
       ## (You need to manually create those child directory: ./data, ./workspace, and others)
       #- ./data:/home/developer/data

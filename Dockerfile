@@ -87,6 +87,7 @@ COPY --chown=${USER}:${USER} ./sample-notebooks $HOME/sample-notebooks
 #   https://github.com/ipython/ipython/issues/7062
 # We just add a little wrapper script.
 ADD --chown=${USER}:${USER} ./scripts $HOME/scripts
+COPY --chown=${USER}:${USER} ./docker-entrypoint.sh /docker-entrypoint.sh
 COPY --chown=${USER}:${USER} ./scripts/run-jupyter.sh /run-jupyter.sh
 COPY --chown=${USER}:${USER} ./scripts/run-jupyter-server.sh /run-jupyter-server.sh
 
@@ -110,6 +111,11 @@ ENV NVIDIA_DRIVER_CAPABILITIES=compute,video,utility
 #### ---- CA-Certifcates variable: ---- ####
 ############################################
 ENV REQUESTS_CA_BUNDLE=${REQUESTS_CA_BUNDLE:-/etc/ssl/certs/ca-certificates.crt}
+
+#########################################
+##### ---- Docker Entrypoint : ---- #####
+#########################################
+ENTRYPOINT ["/docker-entrypoint.sh"]
 
 ##################################
 #### ---- start user env ---- ####
