@@ -1,5 +1,5 @@
 FROM nvcr.io/nvidia/pytorch:22.12-py3
-#FROM pytorch/pytorch:1.13.1-cuda11.6-cudnn8-runtime
+#FROM pytorch/pytorch:1.13.1-cud1a11.6-cudnn8-runtime
 
 MAINTAINER OpenKBS <DrSnowbird@openkbs.org>
 
