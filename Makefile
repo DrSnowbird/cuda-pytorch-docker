@@ -48,6 +48,9 @@ DOCKER_IMAGE := $(ORGANIZATION)/$(DOCKER_NAME)
 #VOLUME_MAP := "-v $${PWD}/data:/home/developer/data -v $${PWD}/workspace:/home/developer/workspace"
 VOLUME_MAP := 
 
+## -- Network: -- ##
+DOCKER_NETWORK=$(shell echo $${DOCKER_NETWORK:-dev_network})
+
 # -- Local SAVE of image --
 IMAGE_EXPORT_PATH := "$${PWD}/archive"
 
@@ -107,6 +110,11 @@ pull:
 		docker pull $(REGISTRY_IMAGE):$(VERSION) ; \
 	fi
 
+network:
+	echo -e ">>> ==================== network: ======================"
+	docker network create --driver bridge ${DOCKER_NETWORK}
+	docker network ls
+
 ## -- deployment mode (daemon service): -- ##
 up:
 	bin/auto-config-all.sh
@@ -122,12 +130,12 @@ up:
 
 down:
 	docker-compose down
-	docker ps | grep $(DOCKER_IMAGE)
+	#docker ps | grep $(DOCKER_IMAGE)
 	@echo ">>> Total Dockder images Build using time in seconds: $$(($$(date +%s)-$(TIME_START))) seconds"
 
 down-rm:
 	docker-compose down -v --rmi all --remove-orphans
-	docker ps | grep $(DOCKER_IMAGE)
+	#docker ps | grep $(DOCKER_IMAGE)
 	@echo ">>> Total Dockder images Build using time in seconds: $$(($$(date +%s)-$(TIME_START))) seconds"
 
 ## -- dev/debug -- ##

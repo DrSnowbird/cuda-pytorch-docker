@@ -4,6 +4,8 @@ env|sort
 whoami
 id
 
+SUDO=`which sudo`
+
 #### Assumptions:
 # 0. Run this file using 'root'
 # 1. Host certificates need to map inside the Container as: /certificates
@@ -90,7 +92,7 @@ if [ ! -s ${SOURCE_CERTIFICATES_DIR} ]; then
     exit 1
 else
     echo -e ">>> SOURCE_CERTIFICATES_DIR:"
-    $sudo ls -al ${SOURCE_CERTIFICATES_DIR}
+    ${SUDO} ls -al ${SOURCE_CERTIFICATES_DIR}
 fi
 
 #### ---------------------------------------------------------------------------------------------------------------------------------- ####
@@ -241,21 +243,21 @@ function setupSystemCertificates() {
     echo "================= Setup System Certificates ===================="
     if [ ! -s ${CERTITICATES_INSTALL_DIR} ]; then
         echo -e ">>> WARNING: CERTITICATES_INSTALL_DIR: ${CERTITICATES_INSTALL_DIR}: Not Found!"
-        $sudo mkdir -p ${CERTITICATES_INSTALL_DIR}
+        ${SUDO} mkdir -p ${CERTITICATES_INSTALL_DIR}
     fi
     if [ -s /etc/ca-certificates/update.d/docker-openjdk ]; then
-        sudo cat /etc/ca-certificates/update.d/docker-openjdk
+        ${SUDO} cat /etc/ca-certificates/update.d/docker-openjdk
         echo ">> JAVA PATH=`which java`"
-        $sudo sed -i "s#\$JAVA_HOME#$JAVA_HOME#g" /etc/ca-certificates/update.d/docker-openjdk
+        ${SUDO} sed -i "s#\$JAVA_HOME#$JAVA_HOME#g" /etc/ca-certificates/update.d/docker-openjdk
         env | grep -i java
-        sudo cat /etc/ca-certificates/update.d/docker-openjdk
+        ${SUDO} cat /etc/ca-certificates/update.d/docker-openjdk
     fi
-    $sudo ls -al  ${SOURCE_CERTIFICATES_DIR}/*
+    ${SUDO} ls -al  ${SOURCE_CERTIFICATES_DIR}/*
     echo -e ">>> ------------------------------"
     echo -e ">>> ------------------------------"
     echo -e ">>> /certificates: ${CERT_FILES}"
     echo -e ">>> ------------------------------"
-    #for certificate in `$sudo ls ${SOURCE_CERTIFICATES_DIR}/* | grep '*.pem\|*.crt' | grep -v dummy`; do
+    #for certificate in `${SUDO} ls ${SOURCE_CERTIFICATES_DIR}/* | grep '*.pem\|*.crt' | grep -v dummy`; do
     CERT_FILES=`find ${SOURCE_CERTIFICATES_DIR} -type f |grep -v dummy|grep 'crt\|pem'`
     for cert_file in ${CERT_FILES}; do
         echo -e ">>> Adding Certificate file: ${cert_file}"
@@ -265,18 +267,18 @@ function setupSystemCertificates() {
         ## openssl x509 -ouform der -in Some-Certificate.pem -out Some-Certificate.crt
         #if [[ "${cert_file}" == *"pem" ]]; then
         if [ "${extension}" == "pem" ]; then
-            $sudo openssl x509 -ouform der -in ${cert_file} -out ${SOURCE_CERTIFICATES_DIR}/${filename//pem/crt}
+            ${SUDO} openssl x509 -ouform der -in ${cert_file} -out ${SOURCE_CERTIFICATES_DIR}/${filename//pem/crt}
         fi
         #if [[ "${cert_file}" == *"crt" ]]; then
         if [ "${extension}" == "crt" ]; then
-            #$sudo cp root.cert.pem /usr/local/share/ca-certificates/root.cert.crt
-            # $sudo cp ${SOURCE_CERTIFICATES_DIR}/${cert} ${CERTITICATES_INSTALL_DIR}/${filename}
-            $sudo cp ${cert_file} ${CERTITICATES_INSTALL_DIR}/
+            #${SUDO} cp root.cert.pem /usr/local/share/ca-certificates/root.cert.crt
+            # ${SUDO} cp ${SOURCE_CERTIFICATES_DIR}/${cert} ${CERTITICATES_INSTALL_DIR}/${filename}
+            ${SUDO} cp ${cert_file} ${CERTITICATES_INSTALL_DIR}/
         else
             echo "... ignore non-certificate file: $cert"
         fi
     done
-    $sudo ${CERT_COMMAND} ${CMD_OPT}
+    ${SUDO} ${CERT_COMMAND} ${CMD_OPT}
 }
 setupSystemCertificates 
 

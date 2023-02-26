@@ -1,6 +1,8 @@
-#!/bin/bash -x
+#!/bin/bash
 
 echo "####################### Components: $(basename $0) ###########################"
+
+SUDO=`which sudo`
 
 #### -------------------------------------------------
 #### OS_TYPE=1:Ubuntu, 2:Centos,, 0: OS_TYPE_NOT_FOUND
@@ -71,15 +73,15 @@ ftp_proxy=${ftp_proxy//\"/}
 #### ---- Format (Ubuntu): /etc/apt/apt.conf Proxy Server URL ---- ####
 #    Acquire::http::Proxy "http://user:pass@proxy_host:port";
 # Other way:
-#    sudo apt-get -o Acquire::http::proxy=false <update/install> 
-#    sudo apt-get -o Acquire::http::proxy=http://proxy.openkbs.org:80/ <update/install> 
+#    ${SUDO} apt-get -o Acquire::http::proxy=false <update/install> 
+#    ${SUDO} apt-get -o Acquire::http::proxy=http://proxy.openkbs.org:80/ <update/install> 
 function addProxyToAptConf() {
     echo "================= Setup apt/yum Proxy ===================="
     proxy_already="`cat ${REPO_CONF}|grep -i proxy`"
     if [ "${proxy_already}" = "" ] && [ ${HAS_PROXY} -gt 0 ]; then
-        [ ! -z "${http_proxy}" ] && echo "Acquire::http::Proxy \"${http_proxy}\";" | sudo tee -a ${REPO_CONF}
-        [ ! -z "${https_proxy}" ] && echo "Acquire::https::Proxy \"${https_proxy}\";" | sudo tee -a ${REPO_CONF}
-        [ ! -z "${ftp_proxy}" ] && echo "Acquire::ftp::Proxy \"${ftp_proxy}\";" | sudo tee -a ${REPO_CONF}
+        [ ! -z "${http_proxy}" ] && echo "Acquire::http::Proxy \"${http_proxy}\";" | ${SUDO} tee -a ${REPO_CONF}
+        [ ! -z "${https_proxy}" ] && echo "Acquire::https::Proxy \"${https_proxy}\";" | ${SUDO} tee -a ${REPO_CONF}
+        [ ! -z "${ftp_proxy}" ] && echo "Acquire::ftp::Proxy \"${ftp_proxy}\";" | ${SUDO} tee -a ${REPO_CONF}
     fi
 }
 addProxyToAptConf ${http_proxy}
@@ -90,10 +92,10 @@ function addProxyToEtcEnv() {
     if [ "${etc_proxy_already}" = "" ] && [ ${HAS_PROXY} -gt 0 ]; then
         no_proxy=${no_proxy//[[:blank:]]/}
         no_proxy=${no_proxy//\"/}
-        [ ! -z "${http_proxy}" ] && echo "http_proxy=${http_proxy}" | sudo tee -a ${ETC_ENV}
-        [ ! -z "${https_proxy}" ] && echo "https_proxy=${https_proxy}" | sudo tee -a ${ETC_ENV}
-        [ ! -z "${ftp_proxy}" ] && echo "ftp_proxy=${ftp_proxy}" | sudo tee -a ${ETC_ENV}
-        [ ! -z "${no_proxy}" ] && echo "no_proxy=${no_proxy}" | sudo tee -a ${ETC_ENV}
+        [ ! -z "${http_proxy}" ] && echo "http_proxy=${http_proxy}" | ${SUDO} tee -a ${ETC_ENV}
+        [ ! -z "${https_proxy}" ] && echo "https_proxy=${https_proxy}" | ${SUDO} tee -a ${ETC_ENV}
+        [ ! -z "${ftp_proxy}" ] && echo "ftp_proxy=${ftp_proxy}" | ${SUDO} tee -a ${ETC_ENV}
+        [ ! -z "${no_proxy}" ] && echo "no_proxy=${no_proxy}" | ${SUDO} tee -a ${ETC_ENV}
     fi
 }
 addProxyToEtcEnv
