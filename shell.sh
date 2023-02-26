@@ -10,6 +10,9 @@ if [ $# -lt 1 ]; then
 fi
 
 CMD=$*
+if [ $# -lt 1 ]; then
+    CMD=/bin/bash
+fi
 
 ###################################################
 #### ---- Change this only to use your own ----
@@ -31,4 +34,6 @@ echo "---------------------------------------------"
 echo "---- shell into the Container for ${imageTag}"
 echo "---------------------------------------------"
 
-sudo docker exec -it $(sudo docker ps -a |grep ${instanceName} |awk '{print $1;}') ${CMD}
+#sudo docker exec -it $(sudo docker ps -a |grep ${instanceName} |awk '{print $1;}') /bin/bash
+sudo docker exec -it $(sudo docker ps -a |grep ${instanceName} |awk '{print $1}') "${CMD}"
+
