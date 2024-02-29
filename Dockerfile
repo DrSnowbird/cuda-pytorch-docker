@@ -1,5 +1,5 @@
-FROM nvcr.io/nvidia/pytorch:22.12-py3
-#FROM pytorch/pytorch:1.13.1-cud1a11.6-cudnn8-runtime
+FROM nvcr.io/nvidia/pytorch:24.01-py3
+#FROM nvcr.io/nvidia/pytorch:22.12-py3
 
 MAINTAINER OpenKBS <DrSnowbird@openkbs.org>
 
@@ -106,6 +106,20 @@ VOLUME $HOME/notebooks
 ENV TOKENIZERS_PARALLELISM=false
 ENV NVIDIA_VISIBLE_DEVICES=all
 ENV NVIDIA_DRIVER_CAPABILITIES=compute,video,utility
+
+#/usr/lib/x86_64-linux-gnu/libnvinfer.so -> libnvinfer.so.8.5.1
+#/usr/lib/x86_64-linux-gnu/libnvinfer.so.8 -> libnvinfer.so.8.5.1
+#/usr/lib/x86_64-linux-gnu/libnvinfer.so.8.5.1
+#/usr/lib/x86_64-linux-gnu/libnvinfer_builder_resource.so.8.5.1
+#/usr/lib/x86_64-linux-gnu/libnvinfer_plugin.so -> libnvinfer_plugin.so.8
+#/usr/lib/x86_64-linux-gnu/libnvinfer_plugin.so.8 -> libnvinfer_plugin.so.8.5.1.7
+#/usr/lib/x86_64-linux-gnu/libnvinfer_plugin.so.8.5.1.7
+RUN sudo ln -s /usr/lib/x86_64-linux-gnu/libnvinfer.so /usr/lib/x86_64-linux-gnu/libnvinfer.so.7 && \
+    sudo ln -s /usr/lib/x86_64-linux-gnu/libnvinfer_plugin.so /usr/lib/x86_64-linux-gnu/libnvinfer_plugin.so.7 && \
+    ls -al /usr/lib/x86_64-linux-gnu/libnvinfer*
+
+## fixed error: in container: sudo: setrlimit(RLIMIT_CORE): Operation not permitted
+RUN echo "Set disable_coredump false" | sudo tee -a /etc/sudo.conf
 
 ############################################
 #### ---- CA-Certifcates variable: ---- ####
